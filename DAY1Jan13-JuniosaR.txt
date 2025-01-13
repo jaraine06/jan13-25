@@ -15,19 +15,19 @@ config t
       exec-timeout 0 0
    Int Vlan 1
      no shutdown
-	 ip add 10.12.1.2 255.255.255.0
+	 ip add 10.21.1.2 255.255.255.0
 	 description MGMTDATA
    Int Vlan 10
      no shutdown
-	 ip add 10.12.10.2 255.255.255.0
+	 ip add 10.21.10.2 255.255.255.0
 	 description WIRELESS
    Int Vlan 50
      no shutdown
-	 ip add 10.12.50.2 255.255.255.0
+	 ip add 10.21.50.2 255.255.255.0
 	 description IPCCTV
    Int Vlan 100
      no shutdown
-	 ip add 10.12.100.2 255.255.255.0
+	 ip add 10.21.100.2 255.255.255.0
 	 description VOICEVLAN
 
 !!!DAPAT 7 UNDER SCORE ANG NA EDIT MO  ( LINE 34 to 68 PASTE TO COREBABA SWITCH )
