@@ -47,6 +47,7 @@ config t
       login
       exec-timeout 0 0
    Int Gi 0/1
+	description FiberOptic
      no shutdown
 	  no switchport
 	  ip add 10.12.12.4 255.255.255.0
