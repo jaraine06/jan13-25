@@ -154,7 +154,7 @@ client-identifier 001a.0709.c252
 !!cisco unified call manager Express command
 !@@@CUCM-M
 config t
-   hostname CUCM-_
+   hostname CUCM-21
    enable secret pass
    service password-encryption
    no logging console
@@ -169,22 +169,22 @@ config t
       exec-timeout 0 0
    Int Fa 0/0
      no shutdown
-	 ip add 10._.100.8 255.255.255.0 
+	 ip add 10.21.100.8 255.255.255.0 
 	 end
    
 !!!CUCM ANALOG PHONES CONFIG
 configure terminal
 dial-peer voice 1 pots
-   destination-pattern _00
+   destination-pattern 2100
    port 0/0/0
 dial-peer voice 2 pots
-   destination-pattern _01
+   destination-pattern 2101
    port 0/0/1
 dial-peer voice 3 pots
-   destination-pattern _02
+   destination-pattern 2102
    port 0/0/2
 dial-peer voice 4 pots
-   destination-pattern _03
+   destination-pattern 2103
    port 0/0/3
 end
 
@@ -196,37 +196,37 @@ telephony-service
    no auto-reg-ephone
    max-ephones 5
    max-dn 20
-   ip source-address 10.__.100.8 port 2000
+   ip source-address 10.21.100.8 port 2000
    create cnf-files
 ephone-dn 1
-  number __11
+  number 2111
 ephone-dn 2
-  number __22
+  number 2122
 ephone-dn 3
-  number __33
+  number 2133
 ephone-dn 4
-  number __44
+  number 2144
 ephone-dn 5
-  number __55
+  number 2155
 ephone-dn 6
-  number __66
+  number 2166
 ephone-dn 7
-  number __77
+  number 2177
 ephone-dn 8
-  number __88
+  number 2188
  ephone-dn 9
-   number__90
+   number 2118
 ephone-dn 10
- number __91
+ number 2129
 Ephone 1
-  Mac-address ____.____.____
+  Mac-address ccd8.c1fb.12ff
   type 8945
-  button 1:8 2:7 3:6 4:5
+  button 1:1 2:2 3:3 4:9
   restart
 Ephone 2
-  Mac-address ____.____.____
+  Mac-address ccd8.c1fb.1103
   type 8945
-  button 1:4 2:3 3:2 4:1
+  button 1:4 2:5 3:6 4:10
   restart  
 end
 
@@ -257,14 +257,14 @@ configure terminal
  destination-pattern 11..
  session target ipv4:10.11.100.8
  codec g711ULAW
- ! dial-peer voice 12 Voip
- ! destination-pattern 12..
- ! session target ipv4:10.12.100.8
- ! codec g711ULAW
-dial-peer voice 21 Voip
- destination-pattern 21..
- session target ipv4:10.21.100.8
- codec g711ULAW
+ dial-peer voice 12 Voip
+ destination-pattern 12..
+ session target ipv4:10.12.100.8
+codec g711ULAW
+! dial-peer voice 21 Voip
+! destination-pattern 21..
+! session target ipv4:10.21.100.8
+! codec g711ULAW
 dial-peer voice 22 Voip
  destination-pattern 22..
  session target ipv4:10.22.100.8
