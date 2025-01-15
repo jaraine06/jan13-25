@@ -295,6 +295,7 @@ router bgp 1
  network 208.8.8.0 mask 255.255.255.0
  network 209.9.9.0 mask 255.255.255.0
 end
+
 @@@ISP1:
 CONFIG T
 router bgp 45
@@ -330,6 +331,8 @@ network 0.0.0.0
 ip route 0.0.0.0 0.0.0.0 null 0
 ip route 10.0.0.0 255.0.0.0 207.7.7.1
 end
+
+
 @@ISP3:
 CONFIG T
 router bgp 3
