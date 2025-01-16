@@ -696,6 +696,8 @@ end
 @@@ COMMAND FOR CLEARING NAT CONFIGURATIONS
 clear ip nat translation *
 
+///////////////END
+
 FW-VPN-PH#show ip nat translations 
 Pro  Inside global         Inside local          Outside local         Outside global
 ---  192.168.108.88        192.168.103.12        ---                   ---
@@ -735,22 +737,37 @@ line vty 0 30
 login local
 end
 
+
+
+
+
+@@@VPN SETUP
 IPSEC VPN SITE TO SITE:
-linBld2:
+linBld2:SETUP IP ADDRESS
 sudo su
 ifconfig eth0 10.10.10.100 netmask 255.255.255.0 up
-route add default gw 10.10.10.11
+route add default gw 10.10.10.1
+
 ping 10.10.10.11
 
-linBld3:
+linBld3: SETUP IP ADDRESS
 sudo su
 ifconfig eth0 10.20.20.100 netmask 255.255.255.0 up
-route add default gw 10.20.20.12
+route add default gw 10.20.20.1
+
 ping 10.20.20.12
-@r2-fwvPN:
+
+
+@r2-PH: SETUP GATEWAY IP ADDRESS
 CONFIG T
 int gi 3
- ip add 10.20.20.12 255.255.255.0
+ ip add 10.10.10.1 255.255.255.0
+end
+
+@r2-JP:
+CONFIG T
+int gi 3
+ ip add 10.20.20.1 255.255.255.0
 end
 
 TASK10: DO YOU HAVE TO REPLACED BY A.I AT WORK? REPLACED BY
