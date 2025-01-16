@@ -174,6 +174,17 @@ Int gi 1
  NO ip access-group NOPORNFAP in
 end
 
+@@@ DELETING  access-group NOPORNFAP
+conf t
+int Gi 1
+no ip access-group NOPORNFAP in
+
+//////////////END
+
+
+-------ACCESS LIST----------
+
+
 @CONFIGURATION FOR BLOCKING 2
 Alternative: use standard ACL 1-99
 config t
@@ -419,9 +430,15 @@ www.web310.com open only http, https, ping
 www.web311.com open only dns, https, ssh       ==> 6 lines:
   GOLDEN  FIREWALL FORMULA:  paloalto,fortinet,cisco,checkpoint.
    protocol         hacker    victim       port
+
+   data = TCP
+   voip = udp
+   ping = icmp
+   all traffic = ip
+
 tcp,udp,icmp,IP     Any      web310/11
 
-@Configuration
+@Configuration FOR FILTERING PORTS
 Config t
 service timestamps log datetime
 service timestamps debug datetime
@@ -429,21 +446,26 @@ logging 10.21.1.10
 logging trap 5
 NO IP access-list Extended FWP1
 IP access-list Extended FWP1
+ Permit tcp Any host www.web310.com eq 22 log
+ Permit tcp Any host www.web310.com eq 53 log
  Permit tcp Any host www.web310.com eq 80 log
- Permit tcp Any host www.web310.com eq 443 log
- Permit icmp Any host www.web310.com log
- Permit tcp Any host www.web311.com eq 53 log
- Permit tcp Any host www.web311.com eq 443 log
+ Permit tcp Any host www.web311.com eq 23 log
  Permit tcp Any host www.web311.com eq 22 log
+ Permit tcp Any host www.web311.com eq 443 log
+ Permit icmp Any host www.web311.com log
  Int Gi 3
   ip access-group FWP1 in
-REMOVE FIREWALL:
+
+@Configuration FOR REMOVE FIREWALL:
 CONfig t
  Int Gi 3
   NO ip access-group FWP1 in
 end
 
-TAKASSSSSSSSG:  control shift 6 bitaw X
+@Command for exit
+TAKASSSSSSSSG:  
+control shift 6 bitaw X
+type disco 1
 
 ex.2: you are the admin for pogo sites:
 www.web310.com open only ssh,dns, http
@@ -468,16 +490,26 @@ CONfig t
   ip access-group FWP2 in
 end
 
+@@@@@@@@@@@@@@@@@@@@
+
 ex.3: you are the admin for SUPERPRANING pogo sites:
-www.web310.com open only 443
-www.web311.com open only ping
+www.web310.com open only HTTPS, Domain
+www.web311.com open only ping, ssh - > 4 line
 config t
 NO IP access-list Extended PRANING3
 IP access-list Extended PRANING3
- Permit tcp Any host www.web310.com eq __ log
- Permit ___  Any host www.web311.com log
+ Permit tcp Any host www.web310.com eq 443 log
+ Permit tcp Any host www.web310.com eq 53 log
+ Permit tcp Any host www.web311.com eq 22 log
+ Permit icmp Any host www.web311.com log
 Int Gi 3
   ip access-group PRANING3 in
+
+@Configuration FOR REMOVE FIREWALL:
+CONfig t
+ Int Gi 3
+  NO ip access-group PRANING3 in
+end
 
 CYBERSECURITY TASK7: PROTECTING YOUR CORPORATE WEB APPS.
 EX.1 CREATE A FIREWALL POLICY NAMED Policy1 TO OPEN
@@ -493,7 +525,17 @@ Permit tcp any host www.web9.com eq 22 log
 Permit tcp any  host www.web9.com eq 53 log
 Interface Gi 3
  ip access-group Policy1 in
+
+@Configuration FOR REMOVE FIREWALL:
+CONfig t
+ Int Gi 3
+  NO ip access-group Policy1 in
+end
+
+
  do sh ip access-list Policy1
+
+
 
 EX.2 CREATE A FIREWALL POLICY NAMED PROWEBAPP2 TO OPEN
 WWW.WEB8.COM HAS HTTPS,PING AS OPEN
@@ -585,17 +627,25 @@ Interface Gi 3
  ip access-group LASTFWP3 in
  do sh ip access-list LASTFWP3
 
+
+/////////////END
+
 TASK8: CONFIGURING CISCO NETWORK SERVICES:
 NETWORK TIME PROTOCOL OR NTP 
 is a layer 7 protocol using UDP 123
 configure your VPNPH to use time.google.com servers in USA:
+
+@Configuration FOR NTP:
 config t
 ntp server 216.239.35.8
 end
+
+@COMMAND FOR SHOWING NTP
 show ntp associations
-GIVE IP ADDRESS TO LINUX BLDGONE AND BLDGTWO:
+
+GIVE IP ADDRESS TO LINUX BLDGTWO AND BLDGTHREE:
 sudo su
-bldg1:
+bldg2:
 ifconfig eth0 192.168.103.11 netmask 255.255.255.0 up
 route add default gw 192.168.103.8
 bldg2:
