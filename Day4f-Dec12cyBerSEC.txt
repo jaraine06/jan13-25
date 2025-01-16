@@ -28,6 +28,29 @@ conf t
 
 
 
+@VMWARE CREATE TWO FWVPN 
+
+
+@PH
+conf t
+no logging console
+int gi 2
+no shut
+ip add 192.168.102.11 255.255.255.0
+end
+wr
+
+@JPN
+conf t
+no logging console
+int gi 2
+no shut
+ip add 192.168.102.12 255.255.255.0
+end
+wr
+
+
+
 TASK1: Cisco Security Fundamentals.
 cmd
 ping 10.k.1.10
@@ -66,12 +89,52 @@ PROTECT YOUR PEOPLE/IT STAFF VS HARM. USE THE POWER
 OF CISCO ACCESS-LIST TO BLOCK ALL THE PORNSITES INT WORLD.
 FROM ENTERING YOUR NETWORK. 
 step1: give Unlimited internet to EDGE:
-@edge
+@FWVPNH
 CONFIG T
 no logging console
 Int Gi 2
 no shut
 ip add 192.168.102.11 255.255.255.0
+
+@FWVPNJP
+CONFIG T
+no logging console
+Int Gi 2
+no shut
+ip add 192.168.102.12 255.255.255.0
+
+@VPNPH & @VPNJP
+conf t
+line vty 0 4
+exec-timeout 0 0
+end
+
+@FWVPNH in SEcureCRT, Paste This:
+config t
+IP ROUTE 0.0.0.0  0.0.0.0 208.8.8.2
+ip name-server 8.8.8.8 1.1.1.1
+ip domain-lookup
+int gi 1
+no shut
+ip add 208.8.8.11 255.255.255.0
+int gi 3
+no shut
+ip add 192.168.103.11 255.255.255.0
+
+@FWVPJP in SEcureCRT, Paste This:
+config t
+IP ROUTE 0.0.0.0  0.0.0.0 208.8.8.2
+ip name-server 8.8.8.8 1.1.1.1
+ip domain-lookup
+int gi 1
+no shut
+ip add 208.8.8.12 255.255.255.0
+int gi 3
+no shut
+ip add 192.168.103.12 255.255.255.0
+
+
+XXXXXX
 @telnet use secureCRT: telnet 192.168.108.5
 in SEcureCRT, Paste This:
 config t
@@ -86,8 +149,9 @@ no shut
 ip add 192.168.103.11 255.255.255.0
 
 
-ALL THE PORN SITES THE WORLD ARE OWNED BY 5 COMPANIES:
 
+ALL THE PORN SITES THE WORLD ARE OWNED BY 5 COMPANIES:
+@CONFIGURATION FOR BLOCKING 1
 config t
 NO ip access-list standard NOPORNFAP
 ip access-list standard NOPORNFAP
@@ -102,12 +166,15 @@ Permit Any
 Int Gi 1
  ip access-group NOPORNFAP in
 end
+
 Goberno: allow all Porn, for freedom of expression!
+@CONFIGURATION FOR NON BLOCKING
 config t
 Int gi 1
  NO ip access-group NOPORNFAP in
 end
 
+@CONFIGURATION FOR BLOCKING 2
 Alternative: use standard ACL 1-99
 config t
 no access-list 69
@@ -122,51 +189,71 @@ access-list 69 permit Any
 Int gi 1
  ip access-group 69 in
 end
-Goberno: allow all Porn, for freedom of expression!
+
+Goberno: NOT allow all Porn, for freedom of expression!
+@CONFIGURATION FOR NON BLOCKING
 config t
 Int gi 1
  NO ip access-group 69 in
 end
 
 Task1.2: block admu.edu.ph, dlsu.edu.ph, ccp.edu.ph, ue.edu.ph
-
-ping www.dlsu.edu.ph 172.67.14.0   104.22.36.0
+@EXAMPLES 
+ping www.dlsu.edu.ph 172.67.0.0   104.22.0.0
 ping www.ccp.edu.ph 50.6.160.0     
 ping www.feu.edu.ph 184.168.125.0  
 ping  www.ue.edu.ph 155.137.92.0  
 ping  www.yourschool.edu.ph = _________
+
+@CONFIGURATION FOR BLOCKING SCHOOL
 config t
 NO ip access-list standard NOISKUL
 ip access-list standard NOISKUL
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
+DENY   172.67.14.0   0.0.255.255
+DENY   104.22.0.0   0.0.255.255
+DENY   50.6.160.0   0.0.255.255
+DENY   184.168.125.0  0.0.255.255
+DENY   155.137.92.0  0.0.255.255
 Permit Any
 Int Gi 1
  ip access-group NOISKUL in
 end
-YOUR COMPANY IS HAS VERY LOW INTERNET SPEED, BEC OF TORRENTS:
-www.thepiratebay.org
-www.limetorrents.com
-www.freeanimeonline.com
-www.torlock2.com
-www.hentaisites.com
-www.iptorrents.com
 
+@CONFIGURATION FOR NON BLOCKING
+Int Gi 1
+NO ip access-group NOISKUL in
+end
+
+
+YOUR COMPANY IS HAS VERY LOW INTERNET SPEED, BEC OF TORRENTS:
+www.thepiratebay.org 162.159.136.0
+www.limetorrents.com 104.21.74.0
+www.freeanimeonline.com 13.248.169.0
+www.torlock2.com 104.21.96.0
+www.hentaisites.com 104.21.30.0
+www.iptorrents.com 104.21.64.0
+
+@CONFIGURATION FOR BLOCKING TORRENTS
 config t
 NO ip access-list standard NOTORS
 ip access-list standard NOTORS
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
-DENY   __.__.__.__   0.0.255.255
+DENY   162.159.0.0   0.0.255.255
+DENY   104.21.0.0  0.0.255.255
+DENY   13.248.0.0  0.0.255.255
+DENY   104.21.0.0  0.0.255.255
+DENY   104.21.0.0  0.0.255.255
+DENY   104.21.0.0 0.0.255.255
 Permit Any
 Int Gi 1
  ip access-group NOTORS in
 end
+
+@CONFIGURATION FOR NON BLOCKING
+Int Gi 1
+NO ip access-group NOTORS in
+end
+
+
 
 TASK2: USE STANDARD ACCESS-LIST TO BLOCK OTHER CONTRIES/CLASSMATE:
 config t
@@ -267,6 +354,9 @@ Summary: NaUbos/Nalimas ang OnlineBankAccount
 
 netstat  -s  -p  tcp
 
+
+@@@@@@@@@@@@@@@@@@@@
+
 TASK5: HOW TO START A CAREER IN NETWORK CYBERSECURITY FOR FREE!!
 intentionally hackable websites
 1. Hack The Box
@@ -279,10 +369,14 @@ intentionally hackable websites
 8. OWASP Mutillidae II
 9. HackThis!!
 
+@@@@@@@@@@@@@@@@@@@@@@
+
 task6: How to Make CISCOLINUX/ CUCM intentionally hackable to Learn
 the Basics for Firewalls.
 before: nmap -v 10.m.100.8,  C> nmap 
 @Cucm: = fa 0/0/ or CSR1000v = gi3
+
+@FWVPNPH
 config t
 int Gi 3
  no shut
@@ -297,15 +391,15 @@ ip http secure-server
 !Make Ping EASY
 ip host www.web310.com 192.168.103.10
 ip host www.web311.com 192.168.103.11
-ip host pc 10.m.1.10
-ip host cm 10.m.100.8
-ip host cm2 10.m.100.9
-ip host p1 10.m.100.101
-ip host p2 10.m.100.102
-ip host c6 10.m.50.6
-ip host c8 10.m.50.8
-ip host sw 10.m.1.4
-ip host ed 10.m.m.1
+ip host pc 10.21.1.10
+ip host cm 10.21.100.8
+ip host cm2 10.21.100.9
+ip host p1 10.21.100.101
+ip host p2 10.21.100.102
+ip host c6 10.21.50.6
+ip host c8 10.21.50.8
+ip host sw 10.21.1.4
+ip host ed 10.21.21.1
 
 TASK7: Enter the World of BlueTeam: Protect vs Redteam: Attack, 
 BlueTeam: UTM: unified Threat management:
@@ -326,10 +420,12 @@ www.web311.com open only dns, https, ssh       ==> 6 lines:
   GOLDEN  FIREWALL FORMULA:  paloalto,fortinet,cisco,checkpoint.
    protocol         hacker    victim       port
 tcp,udp,icmp,IP     Any      web310/11
+
+@Configuration
 Config t
 service timestamps log datetime
 service timestamps debug datetime
-logging 10.m.1.10
+logging 10.21.1.10
 logging trap 5
 NO IP access-list Extended FWP1
 IP access-list Extended FWP1
