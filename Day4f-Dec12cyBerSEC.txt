@@ -1,6 +1,33 @@
 DNS IPv4: verizon.com.ph
 DNS IPv6: epldt.com.ph
 
+
+
+CYBER SECURITY JOB INTERVIEW QUESTIONS
+1. What is CIA? 
+- Confidentiality: Data is encrypted
+ > using MD5, DES ( Digital Encryption Standard ), AES128, AES256, RSA
+- Integrity: Data is not altered: using HASH like SHA1, SHA2, SHA256
+- Availability: Data is protected through backup
+
+Confidentiality Demo:
+@COREBABA
+conf t
+ username admin privilege 15 secret pass
+ username 10.21.1.10 privilege 15 secret $c@tt3r3d@pass
+ line vty 0 14
+ login local
+ end
+
+Encrypt Cisco Traffic using SSH:
+@COREBABA
+conf t
+ ip domain-name cisco.com
+ crypto key generate rsa 
+ ip ssh version 2
+
+
+
 TASK1: Cisco Security Fundamentals.
 cmd
 ping 10.k.1.10
@@ -29,6 +56,9 @@ New-Website -name "wtf1" -hostheader "www.ngcpM.ph" -physicalPath "d:\webs\datin
 CMD
 ping www.ngcpM.ph
 
+https://www.cisco.com/c/en/us/support/routers/8000-series-virtual-router-emulator/series.html
+https://www.cisco.com/c/en/us/support/routers/8000-series-virtual-router-emulator/series.html
+https://www.cisco.com/c/en/us/support/routers/8000-series-virtual-router-emulator/series.html
 
 net  use  s: \\10.k.1.10\c$
 TASK1: PROTECT YOUR MOST IMPORTANT BUSINESS ASSET:
