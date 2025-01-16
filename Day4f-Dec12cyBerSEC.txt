@@ -644,13 +644,14 @@ end
 show ntp associations
 
 GIVE IP ADDRESS TO LINUX BLDGTWO AND BLDGTHREE:
+@COMMAND FOR ADDING IP ADDRESS USING LINUX
 sudo su
 bldg2:
-ifconfig eth0 192.168.103.11 netmask 255.255.255.0 up
-route add default gw 192.168.103.8
-bldg2:
-ifconfig eth0 192.168.103.12 netmask 255.255.255.0 up
-route add default gw 192.168.103.8
+ifconfig eth0 192.168.103.22 netmask 255.255.255.0 up
+route add default gw 192.168.103.11
+bldg3:
+ifconfig eth0 192.168.103.23 netmask 255.255.255.0 up
+route add default gw 192.168.103.11
 ping 8.8.8.8   1.1.1.1  4.2.2.2  8.8.4.4
 
 TASK9: NAT: NETWORK ADDRESS TRANSLATION SERVICE:
@@ -661,8 +662,8 @@ network address translation: NAT GIVE internet to
 entire companies/buildings.
 linBld2:
 sudo su
-ifconfig eth0 10.10.10.100 netmask 255.255.255.0 up
-route add default gw 10.10.10.11
+ifconfig eth0 192.168.102.100 netmask 255.255.255.0 up
+route add default 192.168.102.11
 ping 10.10.10.11
 
 linBld3:
@@ -674,7 +675,7 @@ ping 192.168.103.11
 STEP1: define INSIDE AND OUTSIDE:
 STEP2: create Access-list to permit IP of Inside:
 STEP3: create a NAT pool with overload
-@vpnPH:
+@@@VPNPH:
 config t
 int gi 1
 ip nat OUTSIDE
@@ -683,12 +684,18 @@ ip nat INSIDE
 int gi 3
 ip nat INSIDE
 no access-list 8
-access-list 8 permit 10.10.10.0 0.0.0.255
+access-list 8 permit 192.168.102.0 0.0.0.255
 access-list 8 permit 192.168.103.0 0.0.0.255
 ip nat inside source list 8 interface Gi 1 overload
-ip nat inside source static 10.10.10.100 208.8.8.69
-ip nat inside source static 192.168.103.100 208.8.8.88
+ip nat inside source static 192.168.102.22 208.8.8.69
+ip nat inside source static 192.168.103.23 208.8.8.88
+ip nat inside source static 192.168.103.24 208.8.8.101
+ip nat inside source static 192.168.103.25 208.8.8.46
 end
+
+@@@ COMMAND FOR CLEARING NAT CONFIGURATIONS
+clear ip nat translation *
+
 FW-VPN-PH#show ip nat translations 
 Pro  Inside global         Inside local          Outside local         Outside global
 ---  192.168.108.88        192.168.103.12        ---                   ---
